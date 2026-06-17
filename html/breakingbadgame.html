@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Which Breaking Bad Character Are You?</title>
+<div class="header">
+    <a href="../index.html">Home</a> |
+    <a href="resume.html">Resume</a> |
+    <a href="aboutme.html">Breaking Bad Facts</a> |
+    <a href="breakingbadgame.html">Character Quiz</a>
+</div>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #0f0f0f;
+    color: white;
+    display: flex;
+    justify-content: center;
+    padding-top: 40px;
+}
+
+.container {
+    width: 600px;
+    background: #1c1c1c;
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 10px;
+}
+
+.question {
+    font-size: 20px;
+    margin: 20px 0;
+}
+
+.option {
+    background: #333;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.option:hover {
+    background: #555;
+}
+
+.result {
+    font-size: 22px;
+    margin-top: 20px;
+}
+
+button {
+    margin-top: 20px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background: #444;
+    color: white;
+}
+
+button:hover {
+    background: #666;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Which Breaking Bad Character Are You?</h1>
+
+    <div id="quiz">
+        <div class="question" id="question">Question</div>
+        <div id="options"></div>
+    </div>
+
+    <div id="result" class="result"></div>
+
+    <button onclick="restart()">Restart</button>
+</div>
+
+<script>
+const questions = [
+    {
+        q: "What motivates you the most?",
+        options: [
+            { text: "Family", type: "walt" },
+            { text: "Power and control", type: "gus" },
+            { text: "Money fast", type: "jesse" },
+            { text: "Freedom and fun", type: "saul" }
+        ]
+    },
+    {
+        q: "How do you handle problems?",
+        options: [
+            { text: "Plan carefully", type: "gus" },
+            { text: "Get aggressive", type: "walt" },
+            { text: "Panic a little", type: "jesse" },
+            { text: "Talk your way out", type: "saul" }
+        ]
+    },
+    {
+        q: "Pick a work style:",
+        options: [
+            { text: "Leader in charge", type: "walt" },
+            { text: "Behind the scenes strategist", type: "gus" },
+            { text: "Go with the flow", type: "jesse" },
+            { text: "Avoid work if possible", type: "saul" }
+        ]
+    },
+    {
+        q: "What’s your biggest strength?",
+        options: [
+            { text: "Intelligence", type: "walt" },
+            { text: "Discipline", type: "gus" },
+            { text: "Heart", type: "jesse" },
+            { text: "Charisma", type: "saul" }
+        ]
+    }
+];
+
+let current = 0;
+let scores = {
+    walt: 0,
+    gus: 0,
+    jesse: 0,
+    saul: 0
+};
+
+function loadQuestion() {
+    let q = questions[current];
+
+    document.getElementById("question").innerText = q.q;
+
+    let optionsDiv = document.getElementById("options");
+    optionsDiv.innerHTML = "";
+
+    q.options.forEach(opt => {
+        let div = document.createElement("div");
+        div.className = "option";
+        div.innerText = opt.text;
+
+        div.onclick = () => {
+            scores[opt.type]++;
+            nextQuestion();
+        };
+
+        optionsDiv.appendChild(div);
+    });
+}
+
+function nextQuestion() {
+    current++;
+
+    if (current >= questions.length) {
+        showResult();
+    } else {
+        loadQuestion();
+    }
+}
+
+function showResult() {
+    document.getElementById("quiz").style.display = "none";
+
+    let maxType = Object.keys(scores).reduce((a, b) =>
+        scores[a] > scores[b] ? a : b
+    );
+
+    let resultText = "";
+
+    if (maxType === "walt") resultText = "You are Walter White (Heisenberg) 🧪";
+    if (maxType === "gus") resultText = "You are Gus Fring 🧊";
+    if (maxType === "jesse") resultText = "You are Jesse Pinkman 🔥";
+    if (maxType === "saul") resultText = "You are Saul Goodman ⚖️";
+
+    document.getElementById("result").innerText = resultText;
+}
+
+function restart() {
+    current = 0;
+    scores = { walt: 0, gus: 0, jesse: 0, saul: 0 };
+
+    document.getElementById("quiz").style.display = "block";
+    document.getElementById("result").innerText = "";
+
+    loadQuestion();
+}
+
+loadQuestion();
+</script>
+
+</body>
+</html>
